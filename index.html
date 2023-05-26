@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lista de Personagens Campanha Johnny</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="top">
+  <h2><b>Personagens Campanhas Johnny</b></h2>
+</div>
+  <div class="container mt-4">
+    <form id="personagemForm" style="display: none;">
+        <div class="form-group">
+          <label for="nome">Nome do Personagem:</label>
+          <input type="text" class="form-control" id="nome" required>
+        </div>
+        <div class="form-group">
+          <label for="raca">Raça:</label>
+          <select class="form-control" id="raca">
+            <option value="humano">Humano</option>
+            <option value="elfo">Elfo</option>
+            <option value="ano">Anão</option>
+            <!-- Adicione mais opções de raça conforme necessário -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="classe">Classe:</label>
+          <select class="form-control" id="classe">
+            <option value="guerreiro">Guerreiro</option>
+            <option value="mago">Mago</option>
+            <option value="ladino">Ladino</option>
+            <!-- Adicione mais opções de classe conforme necessário -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="habilidades">Principais Habilidades:</label>
+          <select multiple class="form-control" id="habilidades">
+            <option value="forca">Força</option>
+            <option value="destreza">Destreza</option>
+            <option value="inteligencia">Inteligência</option>
+            <!-- Adicione mais opções de habilidades conforme necessário -->
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Confirmar</button>
+      </form>
+      
+      <button id="cadastrarButton" class="btn btn-success"><b> + Novo Personagem</b></button>
+      
+      <hr>
+      
+      <h3><b>Lista de Personagens:</b></h3>
+      
+      <div class="form-group">
+        <!-- <label for="search">Pesquisar por Nome:</label> -->
+        <input type="text" class="form-control" id="search" oninput="filtrarPersonagens()" placeholder="Digite o nome do personagem">
+      </div>
+      
+      
+      <ul id="personagensList" class="list-group">
+        <!-- Personagens serão adicionados dinamicamente aqui -->
+      </ul>
+    </div>
+    <script>
+      // Dados dos personagens
+      let personagens = [];
+  
+      // Formulário de cadastro de personagem
+      const form = document.getElementById('personagemForm');
+      const nomeInput = document.getElementById('nome');
+      const racaSelect = document.getElementById('raca');
+      const classeSelect = document.getElementById('classe');
+      const habilidadesSelect = document.getElementById('habilidades');
+      const cadastrarButton = document.getElementById('cadastrarButton');
+  
+      cadastrarButton.addEventListener('click', function () {
+        form.style.display = 'block';
+        cadastrarButton.style.display = 'none';
+      });
+  
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+  
+        const nome = nomeInput.value;
+        const raca = racaSelect.value;
+        const classe = classeSelect.value;
+        const habilidades = Array.from(habilidadesSelect.selectedOptions, option => option.value);
+  
+        const personagem = { nome, raca, classe, habilidades };
+        personagens.push(personagem);
+  
+        renderPersonagensList();
+        form.reset();
+        form.style.display = 'none';
+        cadastrarButton.style.display = 'block';
+      });
+  
+      // Renderiza a lista de personagens
+      function renderPersonagensList() {
+        const personagensList = document.getElementById('personagensList');
+        personagensList.innerHTML = '';
+  
+        personagens.forEach((personagem, index) => {
+          const listItem = document.createElement('li');
+          listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+          listItem.textContent = personagem.nome;
+  
+          const excluirButton = document.createElement('button');
+          excluirButton.className = 'btn btn-danger btn-sm';
+          excluirButton.textContent = 'Excluir';
+          excluirButton.addEventListener('click', function (event) {
+            event.stopPropagation();
+            excluirPersonagem(index);
+          });
+  
+          listItem.appendChild(excluirButton);
+          personagensList.appendChild(listItem);
+  
+          listItem.addEventListener('click', function () {
+            exibirFicha(index);
+          });
+        });
+      }
+  
+      // Exclui um personagem
+      function excluirPersonagem(index) {
+        personagens.splice(index, 1);
+        renderPersonagensList();
+      }
+  
+      // Exibe a ficha do jogador
+      function exibirFicha(index) {
+        const personagem = personagens[index];
+        const urlParams = new URLSearchParams();
+        urlParams.append('nome', personagem.nome);
+        urlParams.append('raca', personagem.raca);
+        urlParams.append('classe', personagem.classe);
+        personagem.habilidades.forEach((habilidade, index) => {
+          urlParams.append(`habilidade${index + 1}`, habilidade);
+        });
+  
+        const queryString = urlParams.toString();
+        const url = `ficha.html?${queryString}`;
+        window.open(url, '_blank');
+      }
+  
+      // Filtra os personagens pelo nome
+      function filtrarPersonagens() {
+        const searchInput = document.getElementById('search');
+        const searchTerm = searchInput.value.toLowerCase();
+  
+        const filteredPersonagens = personagens.filter(personagem => personagem.nome.toLowerCase().includes(searchTerm));
+  
+        renderPersonagensList(filteredPersonagens);
+      }
+  
+      // Renderiza a lista de personagens inicialmente
+      renderPersonagensList();
+    </script>
+  </body>
+  </html>      

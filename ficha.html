@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ficha de Personagem</title>
+</head>
+<body>
+
+  <div id="personagemInfo">
+    <!-- As informações do personagem serão preenchidas dinamicamente aqui -->
+  </div>
+
+  <script>
+    // Função para extrair os parâmetros da URL
+    function getURLParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const params = {};
+
+      for (const [key, value] of urlParams) {
+        params[key] = value;
+      }
+
+      return params;
+    }
+
+    // Função para exibir as informações do personagem na ficha
+    function exibirFicha() {
+      const params = getURLParams();
+
+      // Recupera os valores dos parâmetros
+      const nome = params.nome || '';
+      const raca = params.raca || '';
+      const classe = params.classe || '';
+      const habilidades = [];
+
+      // Extrai as habilidades do personagem
+      for (let i = 1; params[`habilidade${i}`]; i++) {
+        habilidades.push(params[`habilidade${i}`]);
+      }
+
+      // Cria o conteúdo HTML com as informações do personagem
+      const fichaHTML = `
+	  <html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Character Name</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.number{
+	position: relative;
+	margin-left: 40px;
+-webkit-appearance: none;
+  margin: 0;
+   width: 45px;
+  height: 30px;
+  color: #333;
+   border: 1px solid #ccc;
+  border-radius: 5px;
+   background-color: #f2f2f2;
+   text-align: center;
+}
+
+strong{padding-right: 10px;}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.collection-content{
+	
+padding: ;
+}
+
+.page-header-iconundefined{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	
+}
+.page-title{display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;}
+
+#img1{width: 60px;}
+
+.texto{
+	width: 150px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+	color: #000000;
+	border-color: #000000;
+}
+
+</style></head><body><article id="e0e3d059-812e-4580-af68-032ca9d7beb2" class="page serif"><header><div class="page-header-iconundefined"><img id="img1" class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/2694-fe0f.svg"/></div><h1 class="page-title">${nome}</h1></header><div class="page-body"><!-- <h1 id="30965acf-1dc5-4f3d-acb4-7c1925bf49cc" class=""></h1><figure id="a6b299a9-7e7a-4512-a318-464fcb957630" class="link-to-page"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Backstory%20a6b299a97e7a4512a318464fcb957630.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4d6.svg"/></a></figure> --><div id="20171013-7e05-4cce-917f-e7d26dbb66c1" class="column-list"><div id="bb15c4c7-8660-42ff-921d-301f9a1d9e85" style="width:33.333333333333336%" class="column"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="887ba71d-deca-4e50-89bf-f50b45a2c404"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f454.svg"/></div><div style="width:100%"><strong>Class
+</strong>${classe}</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ff9efcd5-131f-4bee-b9c6-1dcbdb10452a"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f479.svg"/></div><div style="width:100%"><strong>Race</strong>
+${raca}</div></figure></div><div id="0cf5ee37-01d9-42b7-97c8-2c7ede981c8a" style="width:33.333333333333336%" class="column"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="9c272726-61e5-40ef-9646-da0eec957364"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f5bc-fe0f.svg"/></div><div style="width:100%"><strong>Background</strong><input class="texto" type="text" name="nome" placeholder=""></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="325d293c-f173-4750-a72a-026d1e2bc93a"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/262f-fe0f.svg"/></div><div style="width:100%"><strong>Alignment</strong>
+Alignment</div></figure></div><div id="de5e0524-f98f-4dd3-bb91-c14e674ad82e" style="width:33.33333333333333%" class="column"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="99129bd8-4c46-40c4-a1dd-69e1f9b126a4"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4db.svg"/></div><div style="width:100%"><strong>Player name
+</strong><input class="texto" type="text" name="nome" placeholder="">
+</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="618abd78-b31d-41ef-90db-19f314bbe0b4"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/2b06-fe0f.svg"/></div><div style="width:100%"><strong>XP &amp; LVL
+</strong><input class="texto" type="text" name="nome" placeholder=""></div></figure></div></div><div id="fc020d2c-934c-4299-b6d8-a069b73b548a" class="column-list"><div id="74edcc0e-06c6-45bb-8b7c-d1755fdf1617" style="width:29.166666666666664%" class="column"><figure class="block-color-orange_background callout" style="white-space:pre-wrap;display:flex" id="fff0ecbd-4784-4b6c-a018-1be2dc946538"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4aa.svg"/></div><div style="width:100%"><strong>STR</strong> <input type="number" class="number"> / <input type="number" class="number">
+</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="edb44b44-b970-4979-9bdb-45e36724feb0"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f590-fe0f.svg"/></div><div style="width:100%"><strong>DEX</strong><input type="number" class="number"> / <input type="number" class="number">
+</div></figure><figure class="block-color-yellow_background callout" style="white-space:pre-wrap;display:flex" id="65feaaec-4a88-4aee-9b69-5677cd4eb699"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f6e1-fe0f.svg"/></div><div style="width:100%"><strong>CON</strong> <input type="number" class="number"> / <input type="number" class="number">
+</div></figure><figure class="block-color-purple_background callout" style="white-space:pre-wrap;display:flex" id="d7cb2389-ad45-4504-86fd-96735e4f23d4"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f9e0.svg"/></div><div style="width:100%"><strong>INT</strong> <input type="number" class="number"> / <input type="number" class="number">
+</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="1917a031-8e3d-4513-9c07-bf908fc0feab"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4da.svg"/></div><div style="width:100%"><strong>SAB</strong> <input type="number" class="number"> / <input type="number" class="number">
+</div></figure><figure class="block-color-pink_background callout" style="white-space:pre-wrap;display:flex" id="aa653826-0c19-4377-b76d-bd84b90288de"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3ad.svg"/></div><div style="width:100%"><strong>CHA</strong> <input type="number" class="number"> / <input type="number" class="number">
+</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="08c13652-a60c-4748-a58d-e0df4a7e0e68"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f441-fe0f.svg"/></div><div style="width:100%"><strong>PER
+0</strong></div></figure></div><div id="77b54683-4f40-4371-b89f-8f51076e26fb" style="width:41.666666666666664%" class="column"><div id="4dc407ba-34e7-4ab6-a5b8-50322d9d6ac2" class="collection-content"><h4 class="collection-title">Saving throws</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M0.637695 13.1914C1.0957 13.1914 1.32812 13 1.47852 12.5215L2.24414 10.3887H6.14746L6.90625 12.5215C7.05664 13 7.2959 13.1914 7.74707 13.1914C8.22559 13.1914 8.5332 12.9043 8.5332 12.4531C8.5332 12.2891 8.50586 12.1523 8.44434 11.9678L5.41602 3.79199C5.2041 3.21777 4.82129 2.9375 4.19922 2.9375C3.60449 2.9375 3.21484 3.21777 3.0166 3.78516L-0.0322266 12.002C-0.09375 12.1797 -0.121094 12.3232 -0.121094 12.4668C-0.121094 12.918 0.166016 13.1914 0.637695 13.1914ZM2.63379 9.12402L4.17871 4.68066H4.21973L5.76465 9.12402H2.63379ZM12.2793 13.2324C13.3115 13.2324 14.2891 12.6787 14.7129 11.8037H14.7402V12.5762C14.7471 12.9863 15.0273 13.2393 15.4238 13.2393C15.834 13.2393 16.1143 12.9795 16.1143 12.5215V8.00977C16.1143 6.49902 14.9658 5.52148 13.1543 5.52148C11.7666 5.52148 10.6592 6.08887 10.2695 6.99121C10.1943 7.15527 10.1533 7.3125 10.1533 7.46289C10.1533 7.81152 10.4062 8.04395 10.7686 8.04395C11.0215 8.04395 11.2129 7.94824 11.3496 7.73633C11.7529 6.99121 12.2861 6.65625 13.1064 6.65625C14.0977 6.65625 14.6992 7.20996 14.6992 8.1123V8.67285L12.5664 8.7959C10.7686 8.8916 9.77734 9.69824 9.77734 11.0107C9.77734 12.3369 10.8096 13.2324 12.2793 13.2324ZM12.6621 12.1387C11.8008 12.1387 11.2129 11.667 11.2129 10.9561C11.2129 10.2725 11.7598 9.82129 12.7578 9.75977L14.6992 9.62988V10.3203C14.6992 11.3457 13.7969 12.1387 12.6621 12.1387Z"></path></svg></span>Skill</th><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesNumber"><path d="M2.4834 10.9902H4.33594L3.75488 13.8887C3.74121 13.9639 3.72754 14.0664 3.72754 14.1416C3.72754 14.5381 3.99414 14.7637 4.39746 14.7637C4.81445 14.7637 5.09473 14.5449 5.18359 14.1143L5.80566 10.9902H8.79297L8.21191 13.8887C8.19824 13.9639 8.18457 14.0664 8.18457 14.1416C8.18457 14.5381 8.45117 14.7637 8.85449 14.7637C9.27148 14.7637 9.55176 14.5449 9.63379 14.1143L10.2627 10.9902H12.4502C12.9287 10.9902 13.2432 10.6758 13.2432 10.2109C13.2432 9.8418 12.9902 9.56836 12.6006 9.56836H10.5498L11.2129 6.28711H13.3662C13.8379 6.28711 14.1523 5.96582 14.1523 5.50098C14.1523 5.13184 13.9062 4.8584 13.5098 4.8584H11.5L12.0195 2.27441C12.0264 2.21973 12.0469 2.11035 12.0469 2.01465C12.0469 1.625 11.7666 1.39258 11.3633 1.39258C10.9053 1.39258 10.6797 1.63867 10.5977 2.05566L10.0303 4.8584H7.04297L7.5625 2.27441C7.57617 2.21973 7.58984 2.11035 7.58984 2.01465C7.58984 1.625 7.30957 1.39258 6.91309 1.39258C6.44824 1.39258 6.21582 1.63867 6.13379 2.05566L5.57324 4.8584H3.54297C3.06445 4.8584 2.75 5.18652 2.75 5.65137C2.75 6.03418 3.00293 6.28711 3.39258 6.28711H5.28613L4.62305 9.56836H2.63379C2.15527 9.56836 1.84082 9.89648 1.84082 10.3613C1.84082 10.7373 2.09375 10.9902 2.4834 10.9902ZM6.09277 9.56836L6.75586 6.28711H9.74316L9.08008 9.56836H6.09277Z"></path></svg></span>Modifier</th></tr></thead><tbody><tr id="d64ab5e1-f55f-4cea-930f-efbb85fba0f0"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Saving%20throws%204dc407ba34e74ab6a5b850322d9d6ac2/STR%20d64ab5e1f55f4cea930fefbb85fba0f0.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4aa.svg"/>STR</a></td><td class="cell-&gt;tU;">0</td></tr><tr id="73f1c126-c804-4e8a-b905-02331a6d71e7"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Saving%20throws%204dc407ba34e74ab6a5b850322d9d6ac2/DEX%2073f1c126c8044e8ab90502331a6d71e7.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f590-fe0f.svg"/>DEX</a></td><td class="cell-&gt;tU;">0</td></tr><tr id="aa82fc59-3283-4e64-9195-0d93d3c61ef5"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Saving%20throws%204dc407ba34e74ab6a5b850322d9d6ac2/Untitled%20aa82fc5932834e6491950d93d3c61ef5.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f6e1-fe0f.svg"/>CON</a></td><td class="cell-&gt;tU;">0</td></tr><tr id="6933a659-91c7-41d4-9d72-b997a2695a17"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Saving%20throws%204dc407ba34e74ab6a5b850322d9d6ac2/INT%206933a65991c741d49d72b997a2695a17.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f9e0.svg"/>INT</a></td><td class="cell-&gt;tU;">0</td></tr><tr id="39ad7266-e7ee-4d00-93c4-f86a88d63e9a"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Saving%20throws%204dc407ba34e74ab6a5b850322d9d6ac2/WIS%2039ad7266e7ee4d0093c4f86a88d63e9a.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4da.svg"/>WIS</a></td><td class="cell-&gt;tU;">0</td></tr><tr id="d9209ac0-0eeb-4790-a65e-578ff8b92484"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Saving%20throws%204dc407ba34e74ab6a5b850322d9d6ac2/CHA%20d9209ac00eeb4790a65e578ff8b92484.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3ad.svg"/>CHA</a></td><td class="cell-&gt;tU;">0</td></tr></tbody></table></div><div id="9f37a488-b5b2-4b95-888a-a74d23b7e909" class="collection-content"><h4 class="collection-title">Skills</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M0.637695 13.1914C1.0957 13.1914 1.32812 13 1.47852 12.5215L2.24414 10.3887H6.14746L6.90625 12.5215C7.05664 13 7.2959 13.1914 7.74707 13.1914C8.22559 13.1914 8.5332 12.9043 8.5332 12.4531C8.5332 12.2891 8.50586 12.1523 8.44434 11.9678L5.41602 3.79199C5.2041 3.21777 4.82129 2.9375 4.19922 2.9375C3.60449 2.9375 3.21484 3.21777 3.0166 3.78516L-0.0322266 12.002C-0.09375 12.1797 -0.121094 12.3232 -0.121094 12.4668C-0.121094 12.918 0.166016 13.1914 0.637695 13.1914ZM2.63379 9.12402L4.17871 4.68066H4.21973L5.76465 9.12402H2.63379ZM12.2793 13.2324C13.3115 13.2324 14.2891 12.6787 14.7129 11.8037H14.7402V12.5762C14.7471 12.9863 15.0273 13.2393 15.4238 13.2393C15.834 13.2393 16.1143 12.9795 16.1143 12.5215V8.00977C16.1143 6.49902 14.9658 5.52148 13.1543 5.52148C11.7666 5.52148 10.6592 6.08887 10.2695 6.99121C10.1943 7.15527 10.1533 7.3125 10.1533 7.46289C10.1533 7.81152 10.4062 8.04395 10.7686 8.04395C11.0215 8.04395 11.2129 7.94824 11.3496 7.73633C11.7529 6.99121 12.2861 6.65625 13.1064 6.65625C14.0977 6.65625 14.6992 7.20996 14.6992 8.1123V8.67285L12.5664 8.7959C10.7686 8.8916 9.77734 9.69824 9.77734 11.0107C9.77734 12.3369 10.8096 13.2324 12.2793 13.2324ZM12.6621 12.1387C11.8008 12.1387 11.2129 11.667 11.2129 10.9561C11.2129 10.2725 11.7598 9.82129 12.7578 9.75977L14.6992 9.62988V10.3203C14.6992 11.3457 13.7969 12.1387 12.6621 12.1387Z"></path></svg></span>Skill</th><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesSelect"><path d="M8 15.126C11.8623 15.126 15.0615 11.9336 15.0615 8.06445C15.0615 4.20215 11.8623 1.00293 7.99316 1.00293C4.13086 1.00293 0.938477 4.20215 0.938477 8.06445C0.938477 11.9336 4.1377 15.126 8 15.126ZM8 13.7383C4.85547 13.7383 2.33301 11.209 2.33301 8.06445C2.33301 4.91992 4.84863 2.39746 7.99316 2.39746C11.1377 2.39746 13.6738 4.91992 13.6738 8.06445C13.6738 11.209 11.1445 13.7383 8 13.7383ZM7.62402 10.6348C7.79492 10.915 8.20508 10.9287 8.37598 10.6348L10.666 6.73145C10.8574 6.41016 10.7002 6.04102 10.3652 6.04102H5.62793C5.29297 6.04102 5.14941 6.43066 5.32031 6.73145L7.62402 10.6348Z"></path></svg></span>Ability</th><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesNumber"><path d="M2.4834 10.9902H4.33594L3.75488 13.8887C3.74121 13.9639 3.72754 14.0664 3.72754 14.1416C3.72754 14.5381 3.99414 14.7637 4.39746 14.7637C4.81445 14.7637 5.09473 14.5449 5.18359 14.1143L5.80566 10.9902H8.79297L8.21191 13.8887C8.19824 13.9639 8.18457 14.0664 8.18457 14.1416C8.18457 14.5381 8.45117 14.7637 8.85449 14.7637C9.27148 14.7637 9.55176 14.5449 9.63379 14.1143L10.2627 10.9902H12.4502C12.9287 10.9902 13.2432 10.6758 13.2432 10.2109C13.2432 9.8418 12.9902 9.56836 12.6006 9.56836H10.5498L11.2129 6.28711H13.3662C13.8379 6.28711 14.1523 5.96582 14.1523 5.50098C14.1523 5.13184 13.9062 4.8584 13.5098 4.8584H11.5L12.0195 2.27441C12.0264 2.21973 12.0469 2.11035 12.0469 2.01465C12.0469 1.625 11.7666 1.39258 11.3633 1.39258C10.9053 1.39258 10.6797 1.63867 10.5977 2.05566L10.0303 4.8584H7.04297L7.5625 2.27441C7.57617 2.21973 7.58984 2.11035 7.58984 2.01465C7.58984 1.625 7.30957 1.39258 6.91309 1.39258C6.44824 1.39258 6.21582 1.63867 6.13379 2.05566L5.57324 4.8584H3.54297C3.06445 4.8584 2.75 5.18652 2.75 5.65137C2.75 6.03418 3.00293 6.28711 3.39258 6.28711H5.28613L4.62305 9.56836H2.63379C2.15527 9.56836 1.84082 9.89648 1.84082 10.3613C1.84082 10.7373 2.09375 10.9902 2.4834 10.9902ZM6.09277 9.56836L6.75586 6.28711H9.74316L9.08008 9.56836H6.09277Z"></path></svg></span>Modifier</th><th><span class="icon property-icon"><svg viewBox="0 0 16 16" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCheckbox"><path d="M3.85742 14.4561H12.1357C13.6123 14.4561 14.3779 13.6904 14.3779 12.2344V3.91504C14.3779 2.45215 13.6123 1.69336 12.1357 1.69336H3.85742C2.38086 1.69336 1.61523 2.45215 1.61523 3.91504V12.2344C1.61523 13.6973 2.38086 14.4561 3.85742 14.4561ZM3.93945 13.1162C3.30371 13.1162 2.95508 12.7812 2.95508 12.1182V4.02441C2.95508 3.36133 3.30371 3.0332 3.93945 3.0332H12.0537C12.6826 3.0332 13.0381 3.36133 13.0381 4.02441V12.1182C13.0381 12.7812 12.6826 13.1162 12.0537 13.1162H3.93945ZM7.26855 11.3115C7.51465 11.3115 7.72656 11.1885 7.87012 10.9697L10.9258 6.19141C11.0146 6.04785 11.0967 5.88379 11.0967 5.72656C11.0967 5.3916 10.7959 5.16602 10.4746 5.16602C10.2695 5.16602 10.085 5.27539 9.94141 5.50781L7.24121 9.8418L5.96973 8.22168C5.80566 8.00977 5.6416 7.93457 5.43652 7.93457C5.10156 7.93457 4.8418 8.20117 4.8418 8.54297C4.8418 8.70703 4.90332 8.85742 5.01953 9.00098L6.63281 10.9697C6.81738 11.209 7.01562 11.3115 7.26855 11.3115Z"></path></svg></span>Proficiency</th></tr></thead><tbody><tr id="68265173-40ab-4bd4-8d49-79e721473914"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Acrobatics%206826517340ab4bd48d4979e721473914.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f590-fe0f.svg"/>Acrobatics</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-yellow">DEX</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="696057eb-5945-4161-b61a-3bd5d8f3ba30"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Animal%20Handling%20696057eb59454161b61a3bd5d8f3ba30.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4da.svg"/>Animal Handling</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-green">WIS</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="2cfe20a9-5c2a-468d-a18d-8817de1dd151"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Arcana%202cfe20a95c2a468da18d8817de1dd151.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f9e0.svg"/>Arcana</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-red">INT</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="ec76c6b6-1601-4415-bc87-743208340009"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Athletics%20ec76c6b616014415bc87743208340009.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4aa.svg"/>Athletics</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-default">STR</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="00167bc1-b14f-4a40-983b-0fd652229d2f"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Deception%2000167bc1b14f4a40983b0fd652229d2f.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3ad.svg"/>Deception</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-brown">CHA</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="240a3956-99ee-4b92-ace6-6b84465fecf0"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/History%20240a395699ee4b92ace66b84465fecf0.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f9e0.svg"/>History</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-red">INT</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="3d11f5b3-cb5c-458b-98d7-676b6227416c"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Insight%203d11f5b3cb5c458b98d7676b6227416c.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4da.svg"/>Insight</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-green">WIS</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="2ab4234c-f112-4587-a3d9-0362aebb5826"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Intimidation%202ab4234cf1124587a3d90362aebb5826.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3ad.svg"/>Intimidation</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-brown">CHA</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="cddd3ed3-0b49-41c9-b63b-bb981c8f5f9a"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Investigation%20cddd3ed30b4941c9b63bbb981c8f5f9a.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f9e0.svg"/>Investigation</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-red">INT</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="ca6c7726-ee5a-44dd-aa66-3e28f1355886"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Medicine%20ca6c7726ee5a44ddaa663e28f1355886.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4da.svg"/>Medicine</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-green">WIS</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="c17bbf06-7b35-49a4-bbed-b8989b9d4c33"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Nature%20c17bbf067b3549a4bbedb8989b9d4c33.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f9e0.svg"/>Nature</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-red">INT</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="c132de03-b947-4f12-af66-79d44e882be1"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Perception%20c132de03b9474f12af6679d44e882be1.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3ad.svg"/>Perception</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-brown">CHA</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="68411dc9-d148-499b-8cf4-c091bc354172"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Performance%2068411dc9d148499b8cf4c091bc354172.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3ad.svg"/>Performance</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-brown">CHA</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="0ea78fc4-f53e-4609-a8b8-50ad461940e4"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Persuasion%200ea78fc4f53e4609a8b850ad461940e4.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3ad.svg"/>Persuasion</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-brown">CHA</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="f07b577d-ffa0-4276-a2d5-9d148924a066"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Religion%20f07b577dffa04276a2d59d148924a066.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f9e0.svg"/>Religion</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-red">INT</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="07c24904-8dd8-4bab-b005-1feef9100411"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Sleight%20of%20hand%2007c249048dd84babb0051feef9100411.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f590-fe0f.svg"/>Sleight of hand</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-yellow">DEX</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="80981101-694e-4688-bfd5-1c2e854f6b1a"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Stealth%2080981101694e4688bfd51c2e854f6b1a.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f590-fe0f.svg"/>Stealth</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-yellow">DEX</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr><tr id="3e4dfde9-2ea7-4c6e-a4a8-3e736f80f1c9"><td class="cell-title"><a href="Character%20Name%20e0e3d059812e4580af68032ca9d7beb2/Skills%209f37a488b5b24b95888aa74d23b7e909/Survival%203e4dfde92ea74c6ea4a83e736f80f1c9.html"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4da.svg"/>Survival</a></td><td class="cell-I&lt;gP"><span class="selected-value select-value-color-green">WIS</span></td><td class="cell-Vll?">0</td><td class="cell-^Fg&gt;"><div class="checkbox checkbox-off"></div></td></tr></tbody></table></div></div><div id="bac6ebff-4fbd-4bd8-bc21-1034c9936b1d" style="width:29.166666666666668%" class="column"><figure class="block-color-red_background callout" style="white-space:pre-wrap;display:flex" id="f16de5b0-193d-4069-a775-a99b3465edf0"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f49a.svg"/></div><div style="width:100%"><strong>HP (0)</strong><input type="number" class="number"></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ff272f5c-f0bf-478b-afde-1e2692c08db7"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f6e1-fe0f.svg"/></div><div style="width:100%"><strong>Armor</strong><input type="number" class="number"></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="6fde8845-9323-4d2d-afe9-d488f04f1e9f"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3b2.svg"/></div><div style="width:100%"><strong>Hit dice</strong><strong>1d</strong><input type="number" class="number"></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="873d6930-f93b-49e1-a3bb-8d588d1b177e"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f4a1.svg"/></div><div style="width:100%"><strong>Inspiration</strong><input type="number" class="number"></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7474fa36-7888-48ef-afb7-3769c190f2b7"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f468-200d-1f393.svg"/></div><div style="width:100%"><strong>Proficient</strong><input type="number" class="number"></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="55590e79-ec4c-467d-97ee-a32bf3f08d64"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/23f3.svg"/></div><div style="width:100%"><strong>Initiative </strong><input type="number" class="number"></div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="0b2d3a44-15c4-48bd-8e8a-8aaedd48662b"><div style="font-size:1.5em"><img class="icon" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f3c3.svg"/></div><div style="width:100%"><strong>Speed</strong>
+30</div></figure></div></div><h1 id="453578de-9b6a-41bb-864f-48454ffc381c" class=""><strong>Features and traits</strong></h1><div id="0c5fe769-04d0-43cc-8169-5d438b6e210c" class="column-list"><div id="612974ca-69a1-4c4c-88c0-077532e1e30f" style="width:50%" class="column"><ul id="50e911f9-043e-4d27-b822-0231d3a84772" class="toggle"><li><details open=""><summary>Feature</summary></details></li></ul></div><div id="ac82a3ab-0e32-4aa3-a582-0d38c31bf458" style="width:50%" class="column"><ul id="5d6a61ef-6941-46f7-8ae2-357c0117c4ed" class="toggle"><li><details open=""><summary>Feature</summary></details></li></ul></div></div><div id="5092e2d9-0959-4512-b55e-e959b1b9651e" class="column-list"><div id="1d00be6f-3951-4afe-a35d-69d72beb89ce" style="width:50%" class="column"></div></article></body></html>
+      `;
+
+      // Insere o conteúdo da ficha na página
+      const personagemInfo = document.getElementById('personagemInfo');
+      personagemInfo.innerHTML = fichaHTML;
+    }
+
+    // Chama a função para exibir a ficha ao carregar a página
+    exibirFicha();
+  </script>
+</body>
+</html>
