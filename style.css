@@ -1,3 +1,9 @@
+html,body{
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+
+}
 h2{
     text-align: center;
     padding: 50px;
@@ -17,4 +23,17 @@ li.list-group-item.d-flex.justify-content-between.align-items-center{
 
     background-color: rgba(118, 118, 118, 0.469);
 
+}
+
+footer{
+    min-height: 100px;
+    background-color:black;
+    flex-shrink: 0;
+    margin-top: 20%;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+body{
+    min-height: 100vh;
 }
