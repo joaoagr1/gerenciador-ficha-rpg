@@ -20,7 +20,7 @@ CREATE TABLE character_attributes (
   str NUMERIC,
   dex NUMERIC,
   con NUMERIC,
-  int NUMERIC,
+  inte NUMERIC,
   wis NUMERIC,
   cha NUMERIC,
   per NUMERIC,
