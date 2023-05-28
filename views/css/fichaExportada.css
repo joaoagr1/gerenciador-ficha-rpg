@@ -8,7 +8,7 @@ html {/* 	 */
 	box-sizing: border-box;
 	-webkit-print-color-adjust: exact;
 }
-body{background-image: url(../dndteste/top.jpg);}
+body{background-image: url(../imgs/topography.svg);}
 article{background-color:white;}
 
 
@@ -134,7 +134,7 @@ img {
 	font-size: 0.875rem;
 	text-align: center;
 	padding-top:30px;
-	padding-bot:40px;
+	padding-bottom:40px;
 }
 
 .column-list {

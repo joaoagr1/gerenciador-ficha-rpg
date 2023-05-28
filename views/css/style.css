@@ -4,6 +4,16 @@ html,body{
     padding: 0px;
 
 }
+
+body:not(.container.mt-4) {
+    background-image: url('../imgs/topography.svg');
+  }
+
+  .container.mt-4{
+    background-color: white;
+    padding: 20px;
+  }
+
 h2{
     text-align: center;
     padding: 50px;
@@ -12,7 +22,7 @@ h2{
 }
 
 .top{
-    background-image: url(../dndteste/top.jpg);
+    background-image: url(../imgs/top.jpg);
     background-size: cover;
   background-repeat: no-repeat;
     color: white;
@@ -24,7 +34,7 @@ li.list-group-item.d-flex.justify-content-between.align-items-center{
 
     background-color: rgba(118, 118, 118, 0.469);
 
-}
+}   
 
 footer{
     min-height: 100px;
