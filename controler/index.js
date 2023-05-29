@@ -6,8 +6,8 @@
     const nomeInput = document.getElementById('nome');
     const racaSelect = document.getElementById('raca');
     const classeSelect = document.getElementById('classe');
-    const habilidadesSelect = document.getElementById('habilidades');
-    const cadastrarButton = document.getElementById('cadastrarButton');
+/*     const habilidadesSelect = document.getElementById('habilidades');
+ */    const cadastrarButton = document.getElementById('cadastrarButton');
 
     cadastrarButton.addEventListener('click', function () {
       form.style.display = 'block';
@@ -20,9 +20,9 @@
       const nome = nomeInput.value;
       const raca = racaSelect.value;
       const classe = classeSelect.value;
-      const habilidades = Array.from(habilidadesSelect.selectedOptions, option => option.value);
-
-      const personagem = { nome, raca, classe, habilidades };
+/*       const habilidades = Array.from(habilidadesSelect.selectedOptions, option => option.value);
+ */
+      const personagem = { nome, raca, classe, /* habilidades */ };
       personagens.push(personagem);
 
       renderPersonagensList();
@@ -39,7 +39,7 @@
       personagens.forEach((personagem, index) => {
         const listItem = document.createElement('li');
         listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-        listItem.textContent = personagem.nome;
+        listItem.textContent = personagem.nome +  personagem.raca + personagem.classe ;
 
         const excluirButton = document.createElement('button');
         excluirButton.className = 'btn btn-danger btn-sm';
@@ -71,9 +71,9 @@
       urlParams.append('nome', personagem.nome);
       urlParams.append('raca', personagem.raca);
       urlParams.append('classe', personagem.classe);
-      personagem.habilidades.forEach((habilidade, index) => {
+      /* personagem.habilidades.forEach((habilidade, index) => {
         urlParams.append(`habilidade${index + 1}`, habilidade);
-      });
+      }) */;
 
       const queryString = urlParams.toString();
       const url = `ficha.html?${queryString}`;

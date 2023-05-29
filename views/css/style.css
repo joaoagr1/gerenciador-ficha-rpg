@@ -5,6 +5,8 @@ html,body{
 
 }
 
+
+
 body:not(.container.mt-4) {
     background-image: url('../imgs/topography.svg');
   }
@@ -33,6 +35,8 @@ h2{
 li.list-group-item.d-flex.justify-content-between.align-items-center{
 
     background-color: rgba(118, 118, 118, 0.469);
+    font-weight: bold;
+
 
 }   
 

@@ -1,16 +1,16 @@
 
 /* cspell:disable-file */
 /* webkit printing magic: print all background colors */
-html {/* 	 */
-	-webkit-print-color-adjust: exact;
-}
+/*  */
 * {
 	box-sizing: border-box;
-	-webkit-print-color-adjust: exact;
+	/* -webkit-print-color-adjust: exact; */
 }
 body{background-image: url(../imgs/topography.svg);}
-article{background-color:white;}
+article{background-color:white;
+}
 
+/* #e0e3d059-812e-4580-af68-032ca9d7beb2{} */
 
 .colunm{padding:30px;}
 html,
@@ -672,7 +672,7 @@ blockquote {
 .number{
 	position: relative;
 	margin-left: 40px;
--webkit-appearance: none;
+/* -webkit-appearance: none; */
   margin: 0;
    width: 45px;
   height: 30px;
@@ -695,7 +695,7 @@ strong{padding-right: 10px;}
 
 .collection-content{
 	
-padding: ;
+padding: 10px;
 }
 
 .page-header-iconundefined{
@@ -737,4 +737,9 @@ padding: ;
 .collection-content1{
 	
 	padding-left:100px;
+}
+
+#personagemInfo{
+    margin:0px;
+	padding-top: 0px;
 }
