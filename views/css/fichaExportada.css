@@ -6,8 +6,10 @@
 	box-sizing: border-box;
 	/* -webkit-print-color-adjust: exact; */
 }
-body{background-image: url(../imgs/topography.svg);}
+body{background-image: url(../imgs/topography.svg);
+height: 100%;}
 article{background-color:white;
+	height: 100%;
 }
 
 /* #e0e3d059-812e-4580-af68-032ca9d7beb2{} */
@@ -742,4 +744,5 @@ padding: 10px;
 #personagemInfo{
     margin:0px;
 	padding-top: 0px;
+	height: 100%;
 }
